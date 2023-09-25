@@ -24,7 +24,7 @@ THEME_APPS = [
 
 
 INSTALLED_APPS = [
-    "jazzmin",
+    *THEME_APPS,
     'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
