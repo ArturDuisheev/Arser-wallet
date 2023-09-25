@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08ff5f62-ba07-4ed2-9cc0-91b40e88f252" name="Changes" comment="" />
+    <list default="true" id="08ff5f62-ba07-4ed2-9cc0-91b40e88f252" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/__init__.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,16 +34,16 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
+                    <option name="branchName" value="master" />
+                    <option name="lastUsedInstant" value="1695668533" />
+                  </RecentBranch>
+                  <RecentBranch>
                     <option name="branchName" value="ararat_dev" />
-                    <option name="lastUsedInstant" value="1695668304" />
+                    <option name="lastUsedInstant" value="1695668507" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="serga_dev" />
                     <option name="lastUsedInstant" value="1695668271" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="master" />
-                    <option name="lastUsedInstant" value="1695668270" />
                   </RecentBranch>
                 </list>
               </option>
@@ -61,7 +66,6 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -79,6 +83,7 @@
       <option name="presentableId" value="Default" />
       <updated>1695666953738</updated>
       <workItem from="1695666964505" duration="1358000" />
+      <workItem from="1695668446288" duration="2541000" />
     </task>
     <servers />
   </component>
