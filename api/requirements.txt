@@ -1,6 +1,9 @@
 asgiref==3.7.2
 channels==4.0.0
 Django==4.2.5
+python-dotenv==1.0.0
+daphne==4.0.0
+django-jazzmin==2.6.0
 djangochannelsrestframework==1.2.0
 djangorestframework==3.14.0
 pytz==2023.3.post1
