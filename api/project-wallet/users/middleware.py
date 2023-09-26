@@ -1,7 +1,7 @@
-from django.contrib.auth import get_user_model
 from asgiref.sync import sync_to_async
 from channels.middleware import BaseMiddleware
 from django.contrib.auth.models import AnonymousUser, User
+from django.contrib.auth import get_user_model
 
 
 class BaseAuthMiddleware(BaseMiddleware):

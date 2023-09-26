@@ -1,5 +1,5 @@
 """
-ASGI config for core project.
+ASGI config for project-wallet project-wallet.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -13,13 +13,12 @@ import django
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 
-from wallet import routing as wallet_routing
 
-from users.middleware import BaseAuthMiddleware
+from api.core.users.middleware import BaseAuthMiddleware
 
 django.setup()
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project-wallet.settings')
 application = ProtocolTypeRouter({
   "http": get_asgi_application(),
   "websocket": BaseAuthMiddleware(

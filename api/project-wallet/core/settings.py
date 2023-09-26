@@ -47,7 +47,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'core.urls'
+ROOT_URLCONF = 'project-wallet.urls'
 
 TEMPLATES = [
     {
@@ -65,12 +65,12 @@ TEMPLATES = [
     },
 ]
 
-ASGI_APPLICATION = 'core.asgi.application'
-WSGI_APPLICATION = 'core.wsgi.application'
+ASGI_APPLICATION = 'project-wallet.asgi.application'
+WSGI_APPLICATION = 'project-wallet.wsgi.application'
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "BACKEND": "channels_redis.project-wallet.RedisChannelLayer",
         "CONFIG": {
             "hosts": [(os.getenv("REDIS_HOST"), os.getenv("REDIS_PORT"))],
         },
