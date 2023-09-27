@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.idea/
 develop-eggs/
 dist/
 downloads/
@@ -109,11 +110,11 @@ ENV/
 env.bak/
 venv.bak/
 
-# Spyder project settings
+# Spyder project-wallet settings
 .spyderproject
 .spyproject
 
-# Rope project settings
+# Rope project-wallet settings
 .ropeproject
 
 # mkdocs documentation
