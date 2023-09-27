@@ -13,8 +13,9 @@ import django
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 
+from wallet.api import routing as wallet_routing
 
-from api.core.users.middleware import BaseAuthMiddleware
+from users.middleware import BaseAuthMiddleware
 
 django.setup()
 
