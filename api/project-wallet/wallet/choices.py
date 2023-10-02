@@ -12,4 +12,3 @@ class CurrencyChoice(models.TextChoices):
     USD = "USD"
     EUR = "EUR"
     RUB = "RUB"
-
