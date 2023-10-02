@@ -17,6 +17,7 @@ class MoneroService:
     @classmethod
     def get_account(cls, index: int):
         try:
+            
             return wallet.accounts[index]
         except IndexError:
             raise CodeDataException("Неверный индекс аккаунта")
