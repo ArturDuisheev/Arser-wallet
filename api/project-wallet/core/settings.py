@@ -25,14 +25,12 @@ THEME_APPS = [
 
 INSTALLED_APPS = [
     *THEME_APPS,
-    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'channels',
     'rest_framework',
     *APPS,
 ]
@@ -47,7 +45,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'project-wallet.urls'
+ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
@@ -65,17 +63,17 @@ TEMPLATES = [
     },
 ]
 
-ASGI_APPLICATION = 'project-wallet.asgi.application'
-WSGI_APPLICATION = 'project-wallet.wsgi.application'
+ASGI_APPLICATION = 'core.asgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.project-wallet.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [(os.getenv("REDIS_HOST"), os.getenv("REDIS_PORT"))],
-        },
-    },
-}
+# monero
+MONERO_HOST = os.getenv("MONERO_HOST")
+MONERO_PORT = os.getenv("MONERO_PORT")
+MONERO_USER = os.getenv("MONERO_USER")
+MONERO_PASSWORD = os.getenv("MONERO_PASSWORD")
+
+
+default_error_key = 'error'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
