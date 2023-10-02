@@ -1,6 +1,6 @@
 from django.http import HttpRequest
 from django.shortcuts import render
-from wallet.api.monero.serializers import MoneroGetBallanceSerializer, MoneroTransactionSerializer
+from wallet.api.monero.serializers import MoneroDataSerializer, MoneroGetBallanceSerializer
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework.request import Request
@@ -23,15 +23,21 @@ class MoneroAPI(ViewSet):
         except CodeDataException as e:
             return Response(data=e.error_data, status=e.status)
         balance = MoneroService.get_balance(account=account)
+        
         return Response(data={"balance": balance})
 
     def create_transaction(self, request: Request):
-        serializer = MoneroTransactionSerializer(data=request.data)
+        serializer = MoneroDataSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        data = serializer.data
         try:
             wallet = enum_monero.WalletEnum.get_wallet(
-                data["network"],
+                serializer.data["network"],
             )
+            wallet.create_transaction(serializer=serializer)
         except CodeDataException as e:
             return Response(data=e.error_data, status=e.status)
+        
+        return Response()
+        
+    def create_wallet(self, request: Request):
+        MoneroService.create_wallet()
