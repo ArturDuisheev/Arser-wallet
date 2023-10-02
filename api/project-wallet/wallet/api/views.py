@@ -18,7 +18,10 @@ class MoneroAPI(ViewSet):
         serializer = MoneroGetBallanceSerializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
         data = serializer.data
-        account = MoneroService.get_account(data["account_index"])
+        try:
+            account = MoneroService.get_account(data["account_index"])
+        except CodeDataException as e:
+            return Response(data=e.error_data, status=e.status)
         balance = MoneroService.get_balance(account=account)
         return Response(data={"balance": balance})
 
