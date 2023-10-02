@@ -1,11 +1,11 @@
 from django.http import HttpRequest
 from django.shortcuts import render
-from wallet.api.serializers.monero import MoneroGetBallanceSerializer, MoneroTransactionSerializer
+from wallet.api.monero.serializers import MoneroGetBallanceSerializer, MoneroTransactionSerializer
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework.request import Request
 
-from wallet.api.services.monero import MoneroService, wallet
+from wallet.api.monero.services.monero import MoneroService, wallet
 
 from global_modules.exeptions import CodeDataException
 from wallet.api.enum import enum_monero as enum_monero
@@ -35,5 +35,3 @@ class MoneroAPI(ViewSet):
             )
         except CodeDataException as e:
             return Response(data=e.error_data, status=e.status)
-        account = MoneroService.get_account(data["account_index"])
-        account.transfer(data["amount"], data["address"])

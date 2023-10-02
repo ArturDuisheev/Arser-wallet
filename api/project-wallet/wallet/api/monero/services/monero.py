@@ -1,3 +1,4 @@
+from wallet.models import Payment
 from django.conf import settings
 
 from monero.backends.jsonrpc import JSONRPCWallet
@@ -30,14 +31,3 @@ class MoneroService:
             amount=amount,
             address=cls.get_account(0).address
         )
-
-
-class MoneroWallet:
-
-    def get_balance(cls, account) -> float:
-        pass
-
-    def create_transaction(self, amount: float):
-        pass
-
-

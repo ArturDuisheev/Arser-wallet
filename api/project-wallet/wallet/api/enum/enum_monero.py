@@ -1,13 +1,12 @@
 from enum import Enum
 
 from rest_framework import status
-
-import wallet.api.services.monero
+from wallet.api.monero.MoneroWallet import MoneroWallet
 from global_modules.exeptions import CodeDataException
 
 
 class WalletEnum(Enum):
-    monero = wallet.api.services.monero.MoneroWallet
+    monero = MoneroWallet
 
     @classmethod
     def get_wallet(cls, wallet_type: str):
