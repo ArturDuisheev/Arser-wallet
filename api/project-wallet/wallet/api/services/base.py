@@ -1,4 +1,4 @@
-import ccxt
+
 import requests
 from global_modules.exeptions import CodeDataException
 

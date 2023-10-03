@@ -2,7 +2,6 @@
 
 import decimal
 from typing import Any
-import ccxt
 from wallet.api.services.base import Converter
 
 

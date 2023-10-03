@@ -1,9 +1,13 @@
+from tronpy import Tron
 from wallet.models import Payment
 from django.conf import settings
-
+from tronpy.providers import HTTPProvider
 from monero.backends.jsonrpc import JSONRPCWallet
 from monero.wallet import Wallet
 from global_modules.exeptions import CodeDataException
+from monero.account import Account
+
+
 
 wallet = Wallet(JSONRPCWallet(host=settings.MONERO_HOST, port=settings.MONERO_PORT,
                                user=settings.MONERO_USER, password=settings.MONERO_PASSWORD))
@@ -13,10 +17,11 @@ class MoneroService:
 
     @classmethod
     def get_balance(cls, account) -> float:
+        
         return account.balance()
     
     @classmethod
-    def get_account(cls, index: int):
+    def get_account(cls, index: int) -> Account:
         try:
             
             return wallet.accounts[index]
@@ -31,6 +36,6 @@ class MoneroService:
         )
     
     @classmethod
-    def create_wallet(cls, network: str):
-        new_wallet = Wallet()
-        print("new_wallet.")
+    def create_wallet(cls, label: str) -> Account:
+        account = wallet.new_account(label=label)
+        return account
