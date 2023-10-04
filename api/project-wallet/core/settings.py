@@ -73,6 +73,12 @@ MONERO_USER = os.getenv("MONERO_USER")
 MONERO_PASSWORD = os.getenv("MONERO_PASSWORD")
 
 
+
+# tron
+PRIVATE_KEYS_FROM_ADDRESS_TRON = os.getenv("PRIVATE_KEYS_FROM_ADDRESS_TRON")
+FROM_ADDRESS_TRON = os.getenv("FROM_ADDRESS_TRON")
+
+
 default_error_key = 'error'
 
 # Database

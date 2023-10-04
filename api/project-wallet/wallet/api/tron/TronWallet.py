@@ -32,9 +32,9 @@ class TronWallet:
         return serializer.save()
     
 
-    def create_wallet(self, label: str, is_address=False):
+    def create_wallet(self, data: dict):
         
-        return UsdtTronService.create_wallet(label=label)
+        return UsdtTronService.create_wallet(data=data)
     
     def get_account(self, data: dict):
         address = get_field_in_dict_or_exception(data, "address", "Вы не указали address")

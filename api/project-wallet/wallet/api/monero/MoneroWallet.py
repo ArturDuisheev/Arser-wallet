@@ -1,11 +1,13 @@
 
-import decimal
+from global_modules.exeptions import CodeDataException
 
 from wallet.api.services.base import get_field_in_dict_or_exception
 from wallet.api.monero.serializers import PaymentDataSerializer
 from wallet.models import Payment
 from wallet.api.monero.services.monero import MoneroService
 from wallet.api.monero.services.convert import MoneroConverter
+
+from tronpy.exceptions import AddressNotFound
 
 class MoneroWallet:
     """ Класс для работы с Monero"""
@@ -26,7 +28,10 @@ class MoneroWallet:
     
     def get_account(self, data: dict):
         account_index = get_field_in_dict_or_exception(data, "account_index", "Вы не указали account_index")
-        return MoneroService.get_account(int(account_index))
+        try:
+            return MoneroService.get_account(int(account_index))
+        except AddressNotFound:
+            raise CodeDataException("Неверный адресс аккаунта")
 
 
     def _get_atomic_amount(self, amount: str, currency: str):
@@ -44,8 +49,6 @@ class MoneroWallet:
         return serializer.save()
     
 
-    def create_wallet(self, label: str, is_address=False):
-        if not is_address:
-            return MoneroService.create_wallet(label=label)
-        else:
-            return str(MoneroService.create_wallet(label=label).address())
+    def create_wallet(self, data: dict) -> str:
+        label = get_field_in_dict_or_exception(data, "label", "Вы не указали label")
+        return str(MoneroService.create_wallet(label=label).index)
