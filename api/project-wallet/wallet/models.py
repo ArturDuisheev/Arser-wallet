@@ -8,7 +8,7 @@ from reccuring.models import BaseModel
 class Payment(BaseModel):
     amount = models.DecimalField(
         max_digits=10,
-        decimal_places=2,
+        decimal_places=6,
         verbose_name=_("Сумма")
     )
     network = models.CharField(choices=NetWorkChoice.choices, max_length=10)

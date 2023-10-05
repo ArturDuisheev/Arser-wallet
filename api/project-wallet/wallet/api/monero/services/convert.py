@@ -14,5 +14,5 @@ class MoneroConverter(Converter):
     def __call__(self, amount: str, currency: str) -> float:
         self.vs_currencies = currency.lower()
         curs = self.convert_to_xmr(amount=amount)
-        return (decimal.Decimal(self.atomic_utils) / decimal.Decimal(curs)) * decimal.Decimal(amount)
+        return decimal.Decimal(amount) / decimal.Decimal(curs)
         

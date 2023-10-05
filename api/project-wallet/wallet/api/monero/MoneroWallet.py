@@ -4,7 +4,7 @@ from global_modules.exeptions import CodeDataException
 from wallet.api.services.base import get_field_in_dict_or_exception
 from wallet.api.monero.serializers import PaymentDataSerializer
 from wallet.models import Payment
-from wallet.api.monero.services.monero import MoneroService
+from wallet.api.monero.services.monero import MoneroService, wallet as w
 from wallet.api.monero.services.convert import MoneroConverter
 
 from tronpy.exceptions import AddressNotFound
@@ -40,7 +40,7 @@ class MoneroWallet:
 
     def create_transaction(self, serializer: PaymentDataSerializer):
         amount = self._get_atomic_amount(serializer.data["amount"], serializer.data["currency"])
-        transfer = self.account.transfer(amount, serializer.data["address"])
+        transfer = self.account.transfer(amount=amount, address=serializer.data["address"])
         print(transfer)
         return self._create_payment_model(serializer)
 
@@ -48,7 +48,8 @@ class MoneroWallet:
     def _create_payment_model(serializer: PaymentDataSerializer) -> Payment:
         return serializer.save()
     
-
     def create_wallet(self, data: dict) -> str:
         label = get_field_in_dict_or_exception(data, "label", "Вы не указали label")
-        return str(MoneroService.create_wallet(label=label).index)
+        wallet_new = MoneroService.create_wallet(label=label)
+        print(str(wallet_new.address().__dict__))
+        return dict(id=wallet_new.index, address=str(wallet_new.address()))
