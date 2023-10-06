@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  database:    
+    image: postgres:latest
+    environment:
+    - POSTGRES_DB=arser_wallet
+    - POSTGRES_USER=admin
+    - POSTGRES_PASSWORD=admin
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d arser_wallet"]
+      interval: 10s
+      timeout: 5s
+      retries: 80
+      start_period: 10s
+    networks: 
+      - forwebapi
+
+  webapi:
+    build: 
+      context: ../api/
+    container_name: webapi
+    command: ["sh", "-c", "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+    
+    
+    ports:
+        - 8000:8000
+    networks: 
+      - forwebapi
+    depends_on:
+        database:
+          condition: service_healthy
+
+networks:
+  forwebapi:
+    name: forwebapi
+    driver: bridge
