@@ -30,13 +30,13 @@ class MoneroAPI(ViewSet):
         return Response(data={"balance": balance})
 
     def create_transaction(self, request: Request):
-        serializer = PaymentDataSerializer(data=request.data)
+        serializer = NetworkSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
             wallet = enum_monero.WalletEnum.get_wallet(
                 serializer.data["network"],
             )
-            wallet.create_transaction(serializer=serializer)
+            wallet.create_transaction(data=request.data)
         except CodeDataException as e:
             return Response(data=e.error_data, status=e.status)
         

@@ -1,5 +1,8 @@
 
 import decimal
+from wallet.api.tron.services.convert import TronUsdtConverter
+
+from django.conf import settings
 
 from wallet.api.services.base import get_field_in_dict_or_exception
 
@@ -7,11 +10,14 @@ from wallet.api.tron.services.usdt_tron import UsdtTronService
 from wallet.api.monero.serializers import PaymentDataSerializer
 from wallet.models import Payment
 
+from tronpy.keys import PrivateKey
+
+
 class TronWallet:
     """ Класс для работы с Tron"""
 
 
-    converter = None
+    converter = TronUsdtConverter()
 
 
     def get_balance(self, account=None) -> float:
@@ -21,14 +27,23 @@ class TronWallet:
         return self.converter(amount=amount, currency=currency)
 
 
-    def create_transaction(self, serializer: PaymentDataSerializer):
-        amount = self._get_atomic_amount(serializer.data["amount"], serializer.data["currency"])
-        transfer = self.account.transfer(amount, serializer.data["address"])
+    def create_transaction(self, data: dict):
+
+        serializer = PaymentDataSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        amount = self._get_atomic_amount(serializer.validated_data["amount"], serializer.validated_data["currency"])
+        amount = amount * 1_000_000
+        amount = int(amount)
+        priv_key = PrivateKey(bytes.fromhex(settings.PRIVATE_KEYS_FROM_ADDRESS_TRON))
+        transfer = UsdtTronService.create_transaction(from_address=settings.FROM_ADDRESS_TRON,
+                                            to_address=serializer.validated_data["address"], amount=amount,
+                                      priv_key=priv_key)
         print(transfer)
-        return self._create_payment_model(serializer)
+        self._create_payment_model(serializer)
+        return serializer.validated_data
 
     
-    def _create_payment_model(serializer: PaymentDataSerializer) -> Payment:
+    def _create_payment_model(self, serializer: PaymentDataSerializer) -> Payment:
         return serializer.save()
     
 

@@ -10,9 +10,22 @@ class NetworkSerializer(serializers.Serializer):
 
 
 class PaymentDataSerializer(serializers.ModelSerializer):
-    address = serializers.CharField(validators=[MoneroAddressValidator()])
+    address = serializers.CharField()
     class Meta:
         model = m_w.Payment
-        fields = (
+        fields = [
             'id', 'amount', 'network', 'currency', 'order_id', 'address', 'url_callback'
-        )
+        ]
+
+class MoneroPaymentSerializer(PaymentDataSerializer):
+
+    address = serializers.CharField(validators=[MoneroAddressValidator()])
+
+    from_ = serializers.IntegerField()
+
+    class Meta(PaymentDataSerializer.Meta):
+
+        fields = [
+            'id', 'amount', 'network', 'currency', 'order_id', 'address', 'url_callback', 'from_'
+        ]
+

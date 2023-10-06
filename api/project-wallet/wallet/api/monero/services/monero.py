@@ -16,9 +16,12 @@ wallet = Wallet(JSONRPCWallet(host=settings.MONERO_HOST, port=settings.MONERO_PO
 class MoneroService:
 
     @classmethod
-    def get_balance(cls, account) -> float:
+    def get_balance(cls, account: Account) -> float:
         
-        return account.balance()
+        return {
+            "всего средств": account.balance(),
+            "разблокированных средств": account.balance(unlocked=True)
+                }
     
     @classmethod
     def get_account(cls, index: int) -> Account:

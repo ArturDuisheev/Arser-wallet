@@ -2,12 +2,12 @@
 from global_modules.exeptions import CodeDataException
 
 from wallet.api.services.base import get_field_in_dict_or_exception
-from wallet.api.monero.serializers import PaymentDataSerializer
+from wallet.api.monero.serializers import MoneroPaymentSerializer, PaymentDataSerializer
 from wallet.models import Payment
 from wallet.api.monero.services.monero import MoneroService, wallet as w
 from wallet.api.monero.services.convert import MoneroConverter
+from monero.exceptions import NotEnoughUnlockedMoney, NotEnoughMoney
 
-from tronpy.exceptions import AddressNotFound
 
 class MoneroWallet:
     """ Класс для работы с Monero"""
@@ -28,28 +28,38 @@ class MoneroWallet:
     
     def get_account(self, data: dict):
         account_index = get_field_in_dict_or_exception(data, "account_index", "Вы не указали account_index")
-        try:
-            return MoneroService.get_account(int(account_index))
-        except AddressNotFound:
-            raise CodeDataException("Неверный адресс аккаунта")
+        return MoneroService.get_account(int(account_index))
 
 
     def _get_atomic_amount(self, amount: str, currency: str):
         return self.converter(amount=amount, currency=currency)
 
 
-    def create_transaction(self, serializer: PaymentDataSerializer):
-        amount = self._get_atomic_amount(serializer.data["amount"], serializer.data["currency"])
-        transfer = self.account.transfer(amount=amount, address=serializer.data["address"])
-        print(transfer)
+    def create_transaction(self, data: dict):
+
+        serializer = MoneroPaymentSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        if serializer.validated_data.get("from_", None):
+            self.account = self.get_account({
+                "account_index": serializer.validated_data["from_"],
+            })
+        amount = self._get_atomic_amount(serializer.validated_data["amount"], serializer.validated_data["currency"])
+        print(amount)
+        try:
+            transfer = self.account.transfer(amount=amount, address=serializer.validated_data["address"])
+        except NotEnoughUnlockedMoney:
+            raise CodeDataException("Недостаточно разблокированных средств")
+        except NotEnoughMoney:
+            raise CodeDataException("NotEnoughMoney")
+        print(transfer[0], transfer[0].__dict__)
         return self._create_payment_model(serializer)
 
     
-    def _create_payment_model(serializer: PaymentDataSerializer) -> Payment:
-        return serializer.save()
+    def _create_payment_model(self, serializer: MoneroPaymentSerializer) -> dict:
+        serializer.save()
+        return serializer.data
     
     def create_wallet(self, data: dict) -> str:
         label = get_field_in_dict_or_exception(data, "label", "Вы не указали label")
         wallet_new = MoneroService.create_wallet(label=label)
-        print(str(wallet_new.address().__dict__))
         return dict(id=wallet_new.index, address=str(wallet_new.address()))

@@ -13,7 +13,7 @@ class WalletEnum(Enum):
     @classmethod
     def get_wallet(cls, wallet_type: str):
         try:
-            return cls[wallet_type].value()
+            return cls["TRON"].value()
         except KeyError:
             raise CodeDataException(status=status.HTTP_400_BAD_REQUEST, error=f"Wallet type {wallet_type} is not "
                                                                               f"supported.")

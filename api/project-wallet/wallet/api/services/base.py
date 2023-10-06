@@ -16,7 +16,7 @@ class Converter:
     vs_currencies = ""
 
 
-    def convert_to_xmr(self, amount):
+    def convert_to_xmr(self):
         url = "https://api.coingecko.com/api/v3/simple/price"
         params = {
             "ids": self.ids,
@@ -28,7 +28,7 @@ class Converter:
 
         # Парсим JSON-ответ
         data = response.json()
-
+        print(data)
         # Извлекаем цену Monero в рублях
-        xmr_price_in_rub = data["monero"]["rub"]
+        xmr_price_in_rub = data[self.ids]["rub"]
         return xmr_price_in_rub
