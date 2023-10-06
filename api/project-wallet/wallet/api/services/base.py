@@ -30,5 +30,5 @@ class Converter:
         data = response.json()
         print(data)
         # Извлекаем цену Monero в рублях
-        xmr_price_in_rub = data[self.ids]["rub"]
+        xmr_price_in_rub = data[self.ids][self.vs_currencies]
         return xmr_price_in_rub
