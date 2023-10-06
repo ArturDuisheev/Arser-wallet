@@ -1,6 +1,6 @@
 FROM python:3.10.6-alpine3.16
 
-COPY requiments.txt /temp/requiments.txt
+COPY requirements.txt /temp/requirements.txt
 COPY project-wallet /project-wallet
 
 WORKDIR /project-wallet
@@ -9,4 +9,4 @@ EXPOSE 8000
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 RUN pip install --upgrade pip
-RUN pip install -r /temp/requiments.txt
+RUN pip install -r /temp/requirements.txt
