@@ -22,6 +22,11 @@ THEME_APPS = [
     "jazzmin",
 ]
 
+DOCS = [
+
+   'drf_yasg',
+]
+
 
 INSTALLED_APPS = [
     *THEME_APPS,
@@ -33,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     *APPS,
+    *DOCS
 ]
 
 MIDDLEWARE = [

@@ -43,13 +43,16 @@ class MoneroWallet:
             self.account = self.get_account({
                 "account_index": serializer.validated_data["from_"],
             })
+            serializer.validated_data.pop("from_")
         amount = self._get_atomic_amount(serializer.validated_data["amount"], serializer.validated_data["currency"])
         print(amount)
+        
         try:
             transfer = self.account.transfer(amount=amount, address=serializer.validated_data["address"])
         except NotEnoughUnlockedMoney:
             raise CodeDataException("Недостаточно разблокированных средств")
-        except NotEnoughMoney:
+        except NotEnoughMoney as e:
+            print(e)
             raise CodeDataException("NotEnoughMoney")
         print(transfer[0], transfer[0].__dict__)
         return self._create_payment_model(serializer)

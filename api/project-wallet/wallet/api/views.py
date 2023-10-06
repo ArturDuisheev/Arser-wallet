@@ -2,8 +2,8 @@ from django.http import HttpRequest
 from django.shortcuts import render
 from tronpy import Tron
 from tronpy.providers import HTTPProvider
-
-from wallet.api.monero.serializers import NetworkSerializer, PaymentDataSerializer
+from drf_yasg.utils import swagger_auto_schema
+from wallet.api.monero.serializers import MoneroCreateWalletSerializer, MoneroPaymentSerializer, NetworkSerializer, PaymentDataSerializer, QuerySeralizerGetBallance
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework.request import Request
@@ -16,6 +16,7 @@ from wallet.api.services.base import get_field_in_dict_or_exception
 
 class MoneroAPI(ViewSet):
 
+    @swagger_auto_schema(tags=['wallet'], query_serializer=QuerySeralizerGetBallance)
     def get_balance(self, request: Request):
         serializer = NetworkSerializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
@@ -29,6 +30,7 @@ class MoneroAPI(ViewSet):
             return Response(data=e.error_data, status=e.status)
         return Response(data={"balance": balance})
 
+    @swagger_auto_schema(tags=['wallet'], request_body=MoneroPaymentSerializer)
     def create_transaction(self, request: Request):
         serializer = NetworkSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -42,12 +44,14 @@ class MoneroAPI(ViewSet):
         
         return Response()
         
+    @swagger_auto_schema(tags=['wallet'], request_body=MoneroCreateWalletSerializer)
     def create_wallet(self, request: Request):
+        serializer = NetworkSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         try:
             wallet = enum_monero.WalletEnum.get_wallet(
-                request.data["network"],
+                serializer.data["network"],
             )
-            print(wallet)
             address = wallet.create_wallet(request.data)
         except CodeDataException as e:
             return Response(data=e.error_data, status=e.status)
