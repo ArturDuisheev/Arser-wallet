@@ -47,8 +47,9 @@ class MoneroAPI(ViewSet):
             wallet = enum_monero.WalletEnum.get_wallet(
                 request.data["network"],
             )
+            print(wallet)
             address = wallet.create_wallet(request.data)
         except CodeDataException as e:
             return Response(data=e.error_data, status=e.status)
-        
+        print(address)
         return Response(data={"wallet_info": address})
