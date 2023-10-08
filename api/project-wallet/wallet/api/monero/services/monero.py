@@ -19,8 +19,8 @@ class MoneroService:
     def get_balance(cls, account: Account) -> float:
         
         return {
-            "всего средств": account.balance(),
-            "разблокированных средств": account.balance(unlocked=True)
+            "balance": account.balance(),
+            "unlocked": account.balance(unlocked=True)
                 }
     
     @classmethod

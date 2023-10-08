@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  monero:
+    build:
+      context: ./monero
+    command: tail -f /dev/null
+    networks:
+      - forwebapi
+    ports:
+      - "28081:28081"
+      - "28088:28088"
+
+  tron:
+    build:
+      context: ./tron
+    image: trontools/quickstart
+    networks:
+      - forwebapi
+    ports:
+      - "9090:9090"
+
+
+networks:
+  forwebapi:
+    name: forwebapi
+    driver: bridge

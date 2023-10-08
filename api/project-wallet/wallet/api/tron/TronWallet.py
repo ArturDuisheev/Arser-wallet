@@ -20,8 +20,13 @@ class TronWallet:
     converter = TronUsdtConverter()
 
 
-    def get_balance(self, account=None) -> float:
-        return UsdtTronService.get_balance(account)
+    def get_balance(self, account=None) -> dict:
+        balance = UsdtTronService.get_balance(account)
+        data = {
+            "balance": balance,
+            "unlocked": balance
+                }
+        return data
     
     def _get_atomic_amount(self, amount: str, currency: str):
         return self.converter(amount=amount, currency=currency)
