@@ -11,7 +11,6 @@ async def get_client() -> TonlibClient:
 
     keystore_dir = '/tmp/ton_keystore/'
     Path(keystore_dir).mkdir(parents=True, exist_ok=True)
-    print('pre-client')
     client_ton = TonlibClient(ls_index=14, config=config_cli, keystore=keystore_dir, tonlib_timeout=15)
     await client_ton.init()
     return client_ton

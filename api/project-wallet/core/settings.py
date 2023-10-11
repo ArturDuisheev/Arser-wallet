@@ -85,21 +85,24 @@ PRIVATE_KEYS_FROM_ADDRESS_TRON = os.getenv("PRIVATE_KEYS_FROM_ADDRESS_TRON")
 FROM_ADDRESS_TRON = os.getenv("FROM_ADDRESS_TRON")
 
 
+# ton
+TON_MNEMONICS = os.getenv("TON_MNEMONICS")
+
+
 default_error_key = 'error'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'mydatabase', # This is where you put the name of the db file. 
-                 # If one doesn't exist, it will be created at migration time.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv("DATABASE_NAME"),
+        'USER': os.getenv("DATABASE_USER"),
+        'PASSWORD': os.getenv("DATABASE_PASSWORD"),
+        'HOST': os.getenv("DATABASE_HOST"),
+        'PORT': os.getenv("DATABASE_PORT")
     }
 }
-
-
 
 
 # Password validation

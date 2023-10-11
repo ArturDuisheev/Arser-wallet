@@ -3,30 +3,33 @@ from tonsdk.contract.wallet import Wallets, WalletVersionEnum
 from django.conf import settings
 import asyncio
 from wallet.api.ton.services.client import get_client
-
+from tonsdk.provider import prepare_address
 from pytonlib.tonlibjson import ExternalMessageNotAccepted
 
+from global_modules.exeptions import CodeDataException
 
 
 class TonService:
     """ Класс для работы с TON"""
-
-    def get_balance(self, account=None) -> dict:
-        pass
+    @classmethod
+    async def get_balance(cls, account=None) -> dict:
+        return {
+            "url": "https://testnet.tonscan.org/ru"
+        }
 
     @classmethod
-    async def create_wallet(self, data: dict):
+    async def create_wallet(cls, data: dict):
         if not data.get("activate", False):
             mnemonics, _, _, wallet = Wallets.create(version=WalletVersionEnum.v3r2, workchain=0)
             return {
-                "address": wallet.address.to_string(*[True * 4 if settings else True * 3]),
+                "address": wallet.address.to_string(*[True * 4 if settings.DEBUG else True * 3]),
                 "mnemonics": mnemonics
             }
         else:
-            print('1234')
             client = await get_client()
-            print('client')
+            
             _, _, _, wallet = Wallets.from_mnemonics(mnemonics=data.get("mnemonics"),version=WalletVersionEnum.v3r2, workchain=0)
+            
             query = wallet.create_init_external_message()
             deploy_message = query["message"].to_boc(False)
             try:
@@ -34,8 +37,8 @@ class TonService:
                 return {
                     "message": "success"
                 }
-            except ExternalMessageNotAccepted:
-                
+            except ExternalMessageNotAccepted as e:
+                print(e, 213)
                 data_response = {
                     "message": "Wallet balance is null, please to replenish your wallet",
                     
@@ -47,11 +50,24 @@ class TonService:
                 print(wallet.address.to_string(*[True * 4 if settings.DEBUG else True * 3]))
                 return data_response
 
-    def get_account(self, data: dict):
-        pass
+    @classmethod
+    def get_account(cls, data: dict):
+        return Wallets.from_mnemonics(mnemonics=data.get("mnemonics"),version=WalletVersionEnum.v3r2, workchain=0)
 
-    def create_transaction(self, data: dict):
-        pass
+    @classmethod
+    async def create_transaction(cls, amount, address, wallet):
+        client = await get_client()
+        transfer_query = wallet.create_transfer_message(to_addr=address, amount=amount, seqno=1)
+
+        transfer_message = transfer_query["message"].to_boc(False)
+        try:
+            await client.raw_send_message(transfer_message)
+        except ExternalMessageNotAccepted:
+            raise CodeDataException(error="Wallet gas is null", status=400)
+
+
+    
+
 
     def _get_atomic_amount(self, amount: str, currency: str):
         pass
