@@ -16,7 +16,7 @@ class TonWallet:
 
     conterter = TonConverter()
 
-    
+
     def __init__(self) -> None:
         _, _, _,self.account = TonService.get_account({
             'mnemonics':settings.TON_MNEMONICS.split(','),
@@ -36,6 +36,7 @@ class TonWallet:
         serializer.is_valid(raise_exception=True)
         amount = self.conterter(amount=data.get("amount"), currency=data.get("currency"))
         if data.get("mnemonics", False):
+            print(123)
             data =  asyncio.run(TonService.create_transaction(amount=amount,
                                                              address=data.get("address"),
                                                              wallet=TonService.get_account(data=data)[3]))
