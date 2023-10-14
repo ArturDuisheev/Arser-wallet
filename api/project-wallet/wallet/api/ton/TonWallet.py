@@ -14,7 +14,9 @@ from wallet.api.services.base import get_field_in_dict_or_exception
 
 class TonWallet:
 
+    conterter = TonConverter()
 
+    
     def __init__(self) -> None:
         _, _, _,self.account = TonService.get_account({
             'mnemonics':settings.TON_MNEMONICS.split(','),
@@ -25,7 +27,6 @@ class TonWallet:
         address = get_field_in_dict_or_exception(data, "address", "Вы не указали address")
         return address
 
-    conterter = TonConverter()
 
     def create_wallet(self, data: dict):
         return asyncio.run(TonService.create_wallet(data=data))
@@ -35,14 +36,20 @@ class TonWallet:
         serializer.is_valid(raise_exception=True)
         amount = self.conterter(amount=data.get("amount"), currency=data.get("currency"))
         if data.get("mnemonics", False):
-            return asyncio.run(TonService.create_transaction(amount=amount,
+            data =  asyncio.run(TonService.create_transaction(amount=amount,
                                                              address=data.get("address"),
                                                              wallet=TonService.get_account(data=data)[3]))
         else:
-            return asyncio.run(TonService.create_transaction(amount=amount,
+            data =  asyncio.run(TonService.create_transaction(amount=amount,
                                                               address=data.get("address"),
                                                               wallet=self.account
                                                                   ))
+        self._create_payment_model(serializer)
+        return data
     
     def get_balance(self, account=None):
         return asyncio.run(TonService.get_balance(account=account))
+
+    def _create_payment_model(self, serializer: PaymentDataSerializer) -> dict:
+        serializer.save()
+        return serializer.data

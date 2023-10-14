@@ -22,6 +22,10 @@ class PaymentDataSerializer(serializers.ModelSerializer):
 
 class MoneroCreateWalletSerializer(NetworkSerializer):
     label = serializers.CharField(max_length=100)
+    activate = serializers.BooleanField()
+    mnemonics = serializers.ListField(child=serializers.CharField())
+
+
 
 
 

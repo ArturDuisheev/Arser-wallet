@@ -1,5 +1,7 @@
 from enum import Enum
 
+from wallet.api.btc.BtcWallet import BtcWallet
+
 from wallet.api.ton.TonWallet import TonWallet
 from wallet.api.tron.TronWallet import TronWallet
 
@@ -12,6 +14,7 @@ class WalletEnum(Enum):
     MONERO = MoneroWallet
     TRON = TronWallet
     TON = TonWallet
+    BTC = BtcWallet
 
     @classmethod
     def get_wallet(cls, wallet_type: str):

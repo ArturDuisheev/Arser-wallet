@@ -5,7 +5,7 @@ import asyncio
 from wallet.api.ton.services.client import get_client
 from tonsdk.provider import prepare_address
 from pytonlib.tonlibjson import ExternalMessageNotAccepted
-
+from wallet.api.services.base import get_field_in_dict_or_exception
 from global_modules.exeptions import CodeDataException
 
 
@@ -27,9 +27,11 @@ class TonService:
             }
         else:
             client = await get_client()
-            
-            _, _, _, wallet = Wallets.from_mnemonics(mnemonics=data.get("mnemonics"),version=WalletVersionEnum.v3r2, workchain=0)
-            
+            get_field_in_dict_or_exception(data, "mnemonics", "Вы не указали mnemonics")
+            try:
+                _, _, _, wallet = Wallets.from_mnemonics(mnemonics=data.get("mnemonics"),version=WalletVersionEnum.v3r2, workchain=0)
+            except ExternalMessageNotAccepted as e:
+                raise CodeDataException(status=400, error="Неверный mnemonics")
             query = wallet.create_init_external_message()
             deploy_message = query["message"].to_boc(False)
             try:
@@ -38,7 +40,7 @@ class TonService:
                     "message": "success"
                 }
             except ExternalMessageNotAccepted as e:
-                print(e, 213)
+                print(e, 213231231)
                 data_response = {
                     "message": "Wallet balance is null, please to replenish your wallet",
                     
@@ -52,7 +54,10 @@ class TonService:
 
     @classmethod
     def get_account(cls, data: dict):
-        return Wallets.from_mnemonics(mnemonics=data.get("mnemonics"),version=WalletVersionEnum.v3r2, workchain=0)
+        try:
+            return Wallets.from_mnemonics(mnemonics=data.get("mnemonics"),version=WalletVersionEnum.v3r2, workchain=0)
+        except:
+            raise CodeDataException(status=400, error="Неверный mnemonics")
 
     @classmethod
     async def create_transaction(cls, amount, address, wallet):
