@@ -34,6 +34,7 @@ class MoneroPaymentSerializer(PaymentDataSerializer):
     address = serializers.CharField(validators=[MoneroAddressValidator()])
 
     from_ = serializers.IntegerField(required=False)
+    mnemonics = serializers.ListField(child=serializers.CharField(), required=False)
 
     class Meta(PaymentDataSerializer.Meta):
 

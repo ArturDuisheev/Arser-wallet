@@ -2,10 +2,11 @@
 
 from django.urls import path
 
-from wallet.api.views import MoneroAPI
+from wallet.api.views import WalletAPI
 
 urlpatterns = [
-    path('balance', MoneroAPI.as_view({'get': 'get_balance'})),
-    path('transfer', MoneroAPI.as_view({'post': 'create_transaction'})),
-    path('create', MoneroAPI.as_view({'post': 'create_wallet'})),
+    path('balance', WalletAPI.as_view({'get': 'get_balance'})),
+    path('transfer', WalletAPI.as_view({'post': 'create_transaction'})),
+    path('create', WalletAPI.as_view({'post': 'create_wallet'})),
+    path('payment', WalletAPI.as_view({'get': 'payment_list'})),
 ]

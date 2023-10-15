@@ -7,14 +7,14 @@ from wallet.api.monero.serializers import MoneroCreateWalletSerializer, MoneroPa
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework.request import Request
-
+from wallet.models import Payment
 from wallet.api.monero.services.monero import MoneroService, wallet
 
 from global_modules.exeptions import CodeDataException
 from wallet.api.enum import enum_monero as enum_monero
 from wallet.api.services.base import get_field_in_dict_or_exception
 
-class MoneroAPI(ViewSet):
+class WalletAPI(ViewSet):
 
     @swagger_auto_schema(tags=['wallet'], query_serializer=QuerySeralizerGetBallance)
     def get_balance(self, request: Request):
@@ -57,3 +57,9 @@ class MoneroAPI(ViewSet):
             return Response(data=e.error_data, status=e.status)
         print(address)
         return Response(data={"wallet_info": address})
+
+    @swagger_auto_schema(tags=['wallet'])
+    def payment_list(self, request: Request):
+        payment_list = Payment.objects.order_by('-id').all()
+        serializer = PaymentDataSerializer(payment_list, many=True)
+        return Response(serializer.data, status=200)

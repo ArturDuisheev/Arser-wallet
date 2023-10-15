@@ -29,8 +29,7 @@ class BtcWallet:
         serializer.is_valid(raise_exception=True)
         amount = self.conterter(amount=data.get("amount"), currency=data.get("currency"))
         BtcService.create_transaction(amount=round(amount, 3), address=self.get_account(data))
-        self._create_payment_model(serializer)
-        return data
+        return self._create_payment_model(serializer)
     
     def get_balance(self, account):
         return BtcService.get_balance(account=account)

@@ -37,16 +37,16 @@ class TonWallet:
         amount = self.conterter(amount=data.get("amount"), currency=data.get("currency"))
         if data.get("mnemonics", False):
             print(123)
-            data =  asyncio.run(TonService.create_transaction(amount=amount,
+            asyncio.run(TonService.create_transaction(amount=amount,
                                                              address=data.get("address"),
                                                              wallet=TonService.get_account(data=data)[3]))
         else:
-            data =  asyncio.run(TonService.create_transaction(amount=amount,
+            asyncio.run(TonService.create_transaction(amount=amount,
                                                               address=data.get("address"),
                                                               wallet=self.account
                                                                   ))
         self._create_payment_model(serializer)
-        return data
+        return serializer.validated_data
     
     def get_balance(self, account=None):
         return asyncio.run(TonService.get_balance(account=account))

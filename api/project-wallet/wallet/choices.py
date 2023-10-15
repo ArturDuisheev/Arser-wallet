@@ -10,6 +10,8 @@ class NetWorkChoice(models.TextChoices):
 
 class CurrencyChoice(models.TextChoices):
     USD = "USD"
-    EUR = "EUR"
     RUB = "RUB"
+    BYN = "BYN"
+    UAH = "UAH"
+    KZT = "KZT"
 
