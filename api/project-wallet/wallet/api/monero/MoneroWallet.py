@@ -44,6 +44,10 @@ class MoneroWallet:
                 "account_index": serializer.validated_data["from_"],
             })
             serializer.validated_data.pop("from_")
+<<<<<<< HEAD
+=======
+            serializer.validated_data.pop("mnemonics")
+>>>>>>> 9c7844b0f8ed0ac8f3b2c8d2c2d7ded091554ab1
         amount = self._get_atomic_amount(serializer.validated_data["amount"], serializer.validated_data["currency"])
         print(amount)
         

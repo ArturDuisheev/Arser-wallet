@@ -22,6 +22,13 @@ class PaymentDataSerializer(serializers.ModelSerializer):
 
 class MoneroCreateWalletSerializer(NetworkSerializer):
     label = serializers.CharField(max_length=100)
+<<<<<<< HEAD
+=======
+    activate = serializers.BooleanField()
+    mnemonics = serializers.ListField(child=serializers.CharField())
+
+
+>>>>>>> 9c7844b0f8ed0ac8f3b2c8d2c2d7ded091554ab1
 
 
 
@@ -30,11 +37,19 @@ class MoneroPaymentSerializer(PaymentDataSerializer):
     address = serializers.CharField(validators=[MoneroAddressValidator()])
 
     from_ = serializers.IntegerField(required=False)
+<<<<<<< HEAD
+=======
+    mnemonics = serializers.ListField(child=serializers.CharField(), required=False)
+>>>>>>> 9c7844b0f8ed0ac8f3b2c8d2c2d7ded091554ab1
 
     class Meta(PaymentDataSerializer.Meta):
 
         fields = [
+<<<<<<< HEAD
             'id', 'amount', 'network', 'currency', 'order_id', 'address', 'url_callback', 'from_'
+=======
+            'id', 'amount', 'network', 'currency', 'order_id', 'address', 'url_callback', 'from_', 'mnemonics'
+>>>>>>> 9c7844b0f8ed0ac8f3b2c8d2c2d7ded091554ab1
         ]
 
 

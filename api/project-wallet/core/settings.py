@@ -89,6 +89,13 @@ FROM_ADDRESS_TRON = os.getenv("FROM_ADDRESS_TRON")
 TON_MNEMONICS = os.getenv("TON_MNEMONICS")
 
 
+<<<<<<< HEAD
+=======
+# btc
+BTC_WALLET_NAME = os.getenv("BTC_WALLET_NAME")
+BTC_DEFAULT_WALLET_ADDRESS = os.getenv("BTC_DEFAULT_WALLET_ADDRESS")
+
+>>>>>>> 9c7844b0f8ed0ac8f3b2c8d2c2d7ded091554ab1
 default_error_key = 'error'
 
 # Database
