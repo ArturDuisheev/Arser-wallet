@@ -29,6 +29,7 @@ docker exec -it <id контейнера> ./monerod --testnet --rpc-bind-ip 0.0.
 
 5 
 ```
-./monero-wallet-rpc --rpc-bind-port 28088 --wallet-file <название кошелька> --password <пароль кошелька> --testnet
+./monero-wallet-rpc --rpc-bind-port 28088 --rpc-bind-ip 0.0.0.0  --wallet-file <файл кошелька> --password <пароль кошелька> --testnet --confirm-external-bind --rpc-login <логин для входа>
 ```
-
+6
+В откурывшеся контекстном меню ввести пароль для входа

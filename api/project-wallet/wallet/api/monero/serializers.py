@@ -39,7 +39,7 @@ class MoneroPaymentSerializer(PaymentDataSerializer):
     class Meta(PaymentDataSerializer.Meta):
 
         fields = [
-            'id', 'amount', 'network', 'currency', 'order_id', 'address', 'url_callback', 'from_'
+            'id', 'amount', 'network', 'currency', 'order_id', 'address', 'url_callback', 'from_', 'mnemonics'
         ]
 
 

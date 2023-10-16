@@ -1,6 +1,22 @@
 version: '3.9'
 
 services:
+
+
+  btc:
+    build:
+      context: ./btc
+    command: bitcoind -regtest
+    networks:
+      - forwebapi
+    ports:
+      - "18444:18444"
+      - "18445:18445"
+      - "18553:18553"
+      - "18555:18555"
+
+
+
   monero:
     build:
       context: ./monero

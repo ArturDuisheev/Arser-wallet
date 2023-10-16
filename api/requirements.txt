@@ -60,7 +60,6 @@ PySocks==1.7.1
 pytest==7.4.2
 pytest-asyncio==0.21.1
 python-bitcoinlib==0.12.2
-python-bitcoinrpc==1.0
 python-dotenv==1.0.0
 pytonlib==0.0.50
 pytz==2023.3.post1
