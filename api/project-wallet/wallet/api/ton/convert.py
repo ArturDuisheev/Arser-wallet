@@ -17,5 +17,5 @@ class TonConverter(Converter):
         self.vs_currencies = currency.lower()
         curs = self.convert_to_xmr()
         print(curs)
-        return to_nano(amount / curs, 'ton')
+        return to_nano(float(amount) / curs, 'ton')
         
