@@ -1,7 +1,4 @@
-
-import asyncio
 from wallet.api.btc.convert import BtcConverter
-from tonsdk.contract.wallet import Wallets
 
 from wallet.api.monero.serializers import PaymentDataSerializer
 

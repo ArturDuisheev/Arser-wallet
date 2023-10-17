@@ -15,4 +15,4 @@ class BtcConverter(Converter):
         self.vs_currencies = currency.lower()
         curs = self.convert_to_xmr()
         print(curs)
-        return amount / curs
+        return float(amount) / curs

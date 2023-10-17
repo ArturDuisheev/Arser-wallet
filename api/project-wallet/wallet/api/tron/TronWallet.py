@@ -1,5 +1,4 @@
 
-import decimal
 from wallet.api.tron.services.convert import TronUsdtConverter
 
 from django.conf import settings

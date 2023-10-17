@@ -1,7 +1,4 @@
-
-
 import decimal
-from typing import Any
 from wallet.api.services.base import Converter
 
 

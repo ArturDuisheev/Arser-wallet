@@ -5,7 +5,7 @@ from tronpy import Tron
 from tronpy.providers import HTTPProvider
 from tronpy.keys import PrivateKey
 
-client = Tron(HTTPProvider("http://217.28.220.195:9090")) 
+client = Tron(HTTPProvider(settings.TRON_HTTP_URL)) 
 
 
 class UsdtTronService:
@@ -34,7 +34,7 @@ class UsdtTronService:
     
     @classmethod
     def create_transaction(cls, from_address: str, to_address: str, amount: int, priv_key: PrivateKey):
-        tran = client.trx.transfer(from_=from_address, to=to_address, amount=amount).build().sign(priv_key)      
+        tran = client.trx.transfer(from_=from_address, to=to_address, amount=amount).build().sign(priv_key)     
         tran.txid
         tran.broadcast().wait()
         return tran

@@ -1,18 +1,14 @@
-from django.http import HttpRequest
 from django.shortcuts import render
 from tronpy import Tron
-from tronpy.providers import HTTPProvider
 from drf_yasg.utils import swagger_auto_schema
 from wallet.api.monero.serializers import MoneroCreateWalletSerializer, MoneroPaymentSerializer, NetworkSerializer, PaymentDataSerializer, QuerySeralizerGetBallance
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework.request import Request
 from wallet.models import Payment
-from wallet.api.monero.services.monero import MoneroService, wallet
 
 from global_modules.exeptions import CodeDataException
-from wallet.api.enum import enum_monero as enum_monero
-from wallet.api.services.base import get_field_in_dict_or_exception
+from wallet.api.enum import enum_wallet
 
 class WalletAPI(ViewSet):
 
@@ -21,7 +17,7 @@ class WalletAPI(ViewSet):
         serializer = NetworkSerializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
         try:
-            wallet = enum_monero.WalletEnum.get_wallet(
+            wallet = enum_wallet.WalletEnum.get_wallet(
                 serializer.data["network"],
             )
             account = wallet.get_account(request.GET)
@@ -35,7 +31,7 @@ class WalletAPI(ViewSet):
         serializer = NetworkSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
-            wallet = enum_monero.WalletEnum.get_wallet(
+            wallet = enum_wallet.WalletEnum.get_wallet(
                 serializer.data["network"],
             )
             wallet.create_transaction(data=request.data)
@@ -49,7 +45,7 @@ class WalletAPI(ViewSet):
         serializer = NetworkSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
-            wallet = enum_monero.WalletEnum.get_wallet(
+            wallet = enum_wallet.WalletEnum.get_wallet(
                 serializer.data["network"],
             )
             address = wallet.create_wallet(request.data)

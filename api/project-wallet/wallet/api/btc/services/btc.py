@@ -1,8 +1,6 @@
-from wallet.api.btc.convert import BtcConverter
-from tonsdk.contract.wallet import Wallets, WalletVersionEnum
+
 
 from django.conf import settings
-import asyncio
 from wallet.api.btc.services.client import get_client
 from tonsdk.provider import prepare_address
 from pytonlib.tonlibjson import ExternalMessageNotAccepted
