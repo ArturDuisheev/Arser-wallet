@@ -3,7 +3,7 @@ from django.db import models
 
 class NetWorkChoice(models.TextChoices):
     BTC = "BTC"
-    MONERO = "MONERO"
+    XMR = "XMR"
     TON = "TON"
     TRON = "TRON"
 
@@ -11,7 +11,7 @@ class NetWorkChoice(models.TextChoices):
 
 class CurrencyNetWorkChoice(models.TextChoices):
     BTC = "BTC"
-    MONERO = "MONERO"
+    XMR = "XMR"
     TON = "TON"
     USDT = "USDT"
 
