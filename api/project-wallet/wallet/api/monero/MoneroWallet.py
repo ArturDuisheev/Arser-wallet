@@ -64,6 +64,6 @@ class MoneroWallet:
         return serializer.data
     
     def create_wallet(self, data: dict) -> str:
-        label = get_field_in_dict_or_exception(data, "label", "Вы не указали label")
+        label = "default_label"
         wallet_new = MoneroService.create_wallet(label=label)
         return dict(id=wallet_new.index, address=str(wallet_new.address()))

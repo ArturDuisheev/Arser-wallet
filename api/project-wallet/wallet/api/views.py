@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from tronpy import Tron
 from drf_yasg.utils import swagger_auto_schema
-from wallet.api.monero.serializers import MoneroCreateWalletSerializer, MoneroPaymentSerializer, NetworkSerializer, PaymentDataSerializer, QuerySeralizerGetBallance
+from wallet.api.monero.serializers import MoneroCreateWalletSerializer, MoneroPaymentSerializer, NetworkSerializer, PaymentDataSerializer, QuerySeralizerGetBallance, WalletCreateSerializer, WalletSerializer
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework.request import Request
@@ -40,9 +40,9 @@ class WalletAPI(ViewSet):
         
         return Response()
         
-    @swagger_auto_schema(tags=['wallet'], request_body=MoneroCreateWalletSerializer)
+    @swagger_auto_schema(tags=['wallet'], request_body=WalletCreateSerializer)
     def create_wallet(self, request: Request):
-        serializer = NetworkSerializer(data=request.data)
+        serializer = WalletCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
             wallet = enum_wallet.WalletEnum.get_wallet(
@@ -51,8 +51,16 @@ class WalletAPI(ViewSet):
             address = wallet.create_wallet(request.data)
         except CodeDataException as e:
             return Response(data=e.error_data, status=e.status)
-        print(address)
-        return Response(data={"wallet_info": address})
+        
+        data  = {
+            **serializer.validated_data,
+            "address": address if type(address) == str else address["address"],
+
+        }
+        wallet_serializer = WalletSerializer(data=data)
+        wallet_serializer.is_valid(raise_exception=True)
+        wallet_serializer.save()
+        return Response(data={**wallet_serializer.data, "wallet_info": address})
 
     @swagger_auto_schema(tags=['wallet'])
     def payment_list(self, request: Request):

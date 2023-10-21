@@ -28,6 +28,18 @@ class MoneroCreateWalletSerializer(NetworkSerializer):
 
 
 
+class WalletSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = m_w.Wallet
+        fields = '__all__' # TODO: заменить
+
+
+class WalletCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = m_w.Wallet
+        fields = ['network', 'currency', 'order_id', 'url_callback']
 
 class MoneroPaymentSerializer(PaymentDataSerializer):
 
