@@ -8,6 +8,15 @@ class NetWorkChoice(models.TextChoices):
     TRON = "TRON"
 
 
+
+class CurrencyNetWorkChoice(models.TextChoices):
+    BTC = "BTC"
+    MONERO = "MONERO"
+    TON = "TON"
+    USDT = "USDT"
+
+
+
 class CurrencyChoice(models.TextChoices):
     USD = "USD"
     RUB = "RUB"
