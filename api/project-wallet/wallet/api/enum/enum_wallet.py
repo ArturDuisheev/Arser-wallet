@@ -11,7 +11,7 @@ from global_modules.exeptions import CodeDataException
 
 
 class WalletEnum(Enum):
-    MONERO = MoneroWallet
+    XMR = MoneroWallet
     TRON = TronWallet
     TON = TonWallet
     BTC = BtcWallet
