@@ -39,6 +39,7 @@ services:
   ton:
     build:
       context: ./ton
+    command: tail -f /dev/null
     networks:
       - forwebapi
     ports:
