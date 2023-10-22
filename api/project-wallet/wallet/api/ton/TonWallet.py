@@ -34,6 +34,7 @@ class TonWallet:
     def create_transaction(self, data: dict):
         serializer = PaymentDataSerializer(data=data)
         serializer.is_valid(raise_exception=True)
+        
         amount = self.conterter(amount=data.get("amount"), currency=data.get("currency"))
         if data.get("mnemonics", False):
             print(123)

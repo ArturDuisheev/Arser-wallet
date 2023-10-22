@@ -23,4 +23,9 @@ class CurrencyChoice(models.TextChoices):
     BYN = "BYN"
     UAH = "UAH"
     KZT = "KZT"
+    BTC = "BTC"
+    XMR = "XMR"
+    TON = "TON"
+    USDT = "USDT"
+
 

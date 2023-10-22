@@ -24,10 +24,17 @@ class MoneroService:
                 }
     
     @classmethod
-    def get_account(cls, index: int) -> Account:
+    def get_account(cls, index: int, address=None) -> Account:
         try:
-            
-            return wallet.accounts[index]
+            if address is None:
+                return wallet.accounts[index]
+            else:
+                for account in wallet.accounts:
+                    if account.address() == address:
+                        return account
+                else:
+                    raise CodeDataException("Неверный адресс аккаунта")
+
         except IndexError:
             raise CodeDataException("Неверный индекс аккаунта")
 

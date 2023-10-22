@@ -28,7 +28,7 @@ class MoneroWallet:
     
     def get_account(self, data: dict):
         account_index = get_field_in_dict_or_exception(data, "account_index", "Вы не указали account_index")
-        return MoneroService.get_account(int(account_index))
+        return MoneroService.get_account(int(account_index), address=data.get("address", None))
 
 
     def _get_atomic_amount(self, amount: str, currency: str):

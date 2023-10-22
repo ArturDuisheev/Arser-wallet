@@ -16,7 +16,7 @@ class PaymentDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = m_w.Payment
         fields = [
-            'id', 'amount', 'network', 'currency', 'order_id', 'address', 'url_callback'
+            'uuid', 'amount', 'network', 'currency', 'order_id', 'address', 'url_callback'
         ]
 
 
@@ -51,7 +51,7 @@ class MoneroPaymentSerializer(PaymentDataSerializer):
     class Meta(PaymentDataSerializer.Meta):
 
         fields = [
-            'id', 'amount', 'network', 'currency', 'order_id', 'address', 'url_callback', 'from_', 'mnemonics'
+            'uuid', 'amount', 'network', 'currency', 'order_id', 'address', 'url_callback', 'from_', 'mnemonics'
         ]
 
 

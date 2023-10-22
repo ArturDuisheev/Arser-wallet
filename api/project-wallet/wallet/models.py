@@ -11,7 +11,7 @@ from reccuring.models import BaseModel
 class Payment(BaseModel):
     amount = models.DecimalField(
         max_digits=100,
-        decimal_places=2,
+        decimal_places=15,
         verbose_name=_("Сумма")
     )
     network = models.CharField(choices=NetWorkChoice.choices, max_length=10)
@@ -27,4 +27,5 @@ class Wallet(BaseModel):
     currency = models.CharField(choices=CurrencyNetWorkChoice.choices, max_length=10)
     order_id = models.IntegerField(verbose_name=_("ID заказа"))
     address = models.CharField(max_length=200, verbose_name=_("Адрес"))
+    
     url_callback = models.CharField(max_length=200, verbose_name=_("Ссылка"))

@@ -5,7 +5,7 @@ from wallet.api.monero.serializers import MoneroCreateWalletSerializer, MoneroPa
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework.request import Request
-from wallet.models import Payment
+from wallet.models import Payment, Wallet
 
 from global_modules.exeptions import CodeDataException
 from wallet.api.enum import enum_wallet
@@ -34,11 +34,11 @@ class WalletAPI(ViewSet):
             wallet = enum_wallet.WalletEnum.get_wallet(
                 serializer.data["network"],
             )
-            wallet.create_transaction(data=request.data)
+            wallet_data = wallet.create_transaction(data=request.data)
         except CodeDataException as e:
             return Response(data=e.error_data, status=e.status)
         
-        return Response()
+        return Response(data=wallet_data)
         
     @swagger_auto_schema(tags=['wallet'], request_body=WalletCreateSerializer)
     def create_wallet(self, request: Request):
@@ -64,6 +64,25 @@ class WalletAPI(ViewSet):
 
     @swagger_auto_schema(tags=['wallet'])
     def payment_list(self, request: Request):
-        payment_list = Payment.objects.order_by('-id').all()
+        payment_list = Payment.objects.order_by('-uuid').all()
         serializer = PaymentDataSerializer(payment_list, many=True)
+        # TODO: Заменить пересчет здесь, на пересчет в celery
+        wallet_list = Wallet.objects.all()
+        
+        dict_wallet_list = {
+
+        }
+        
+        for payment in payment_list:
+            dict_wallet_list[payment.address] = payment
+        for wallet in wallet_list:
+            wallet_engine = enum_wallet.WalletEnum.get_wallet(
+                "XMR" if wallet.network == "MONERO" else wallet.network,
+            )
+            account = wallet_engine.get_account({
+                "address": wallet.address,
+                "account_index": 1
+            })
+            balance = wallet_engine.get_balance(account)
+            print(balance)
         return Response(serializer.data, status=200)

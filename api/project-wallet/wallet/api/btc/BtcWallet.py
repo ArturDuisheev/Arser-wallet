@@ -24,13 +24,21 @@ class BtcWallet:
     def create_transaction(self, data: dict):
         serializer = PaymentDataSerializer(data=data)
         serializer.is_valid(raise_exception=True)
-        amount = self.conterter(amount=data.get("amount"), currency=data.get("currency"))
-        BtcService.create_transaction(amount=round(amount, 3), address=self.get_account(data))
-        return self._create_payment_model(serializer)
+        
+        if data.get('currency') != 'BTC':
+            amount = self.conterter(amount=data.get("amount"), currency=data.get("currency"))
+        else:
+            amount = float(data.get("amount"))
+        data["amount"] = round(amount, 3)
+        print(amount)
+        serializer = PaymentDataSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        txid = BtcService.create_transaction(amount=round(amount, 3), address=self.get_account(data))
+        return self._create_payment_model(serializer, txid)
     
     def get_balance(self, account):
         return BtcService.get_balance(account=account)
 
-    def _create_payment_model(self, serializer: PaymentDataSerializer) -> dict:
+    def _create_payment_model(self, serializer: PaymentDataSerializer, txid: str) -> dict:
         serializer.save()
-        return serializer.data
+        return {**serializer.data, "txid": txid['txid']}
