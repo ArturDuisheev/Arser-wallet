@@ -36,6 +36,13 @@ services:
     ports:
       - "9090:9090"
 
+  ton:
+    build:
+      context: ./ton
+    networks:
+      - forwebapi
+    ports:
+      - "9876:9876"
 
 networks:
   forwebapi:
