@@ -1,13 +1,15 @@
 from tonsdk.contract.wallet import Wallets, WalletVersionEnum
 
 from django.conf import settings
+from tonsdk.utils import bytes_to_b64str
 import asyncio
 from wallet.api.ton.services.client import get_client
 from tonsdk.provider import prepare_address
 from pytonlib.tonlibjson import ExternalMessageNotAccepted
 from wallet.api.services.base import get_field_in_dict_or_exception
 from global_modules.exeptions import CodeDataException
-
+from TonTools import Wallet, TonCenterClient
+from tonsdk.contract.wallet import WalletContract
 
 class TonService:
     """ Класс для работы с TON"""
@@ -50,7 +52,7 @@ class TonService:
                                                   "Пополнить ваш testnet кошелек можно в телеграм боте https://t.me/testgiver_ton_bot, " \
                                                   "передав адрес кошелька. Данное сообщение будет удалено после деплоя"
                 print(wallet.address.to_string(*[True * 4 if settings.DEBUG else True * 3]))
-                return data_response
+                raise CodeDataException(status=400, error=data_response)
 
     @classmethod
     def get_account(cls, data: dict):
@@ -60,14 +62,25 @@ class TonService:
             raise CodeDataException(status=400, error="Неверный mnemonics")
 
     @classmethod
-    async def create_transaction(cls, amount, address, wallet):
+    async def get_seqno(cls, wallet):
+        address = wallet.address.to_string(*[True * 4 if settings.DEBUG else True * 3])
         client = await get_client()
-        transfer_query = wallet.create_transfer_message(to_addr=address, amount=amount, seqno=1)
+        data = client.raw_run_method(method='seqno', address=address, stack_data=[])
+        print(data, 213213)
 
+
+    @classmethod
+    async def create_transaction(cls, amount, address, wallet: WalletContract):
+        client = await get_client()
+        
+        transfer_query = wallet.create_transfer_message(to_addr=address, amount=amount, seqno=1)
         transfer_message = transfer_query["message"].to_boc(False)
         try:
-            await client.raw_send_message(transfer_message)
-        except ExternalMessageNotAccepted:
+            print(123213)
+            data = await client.raw_send_message(transfer_message)
+            return data
+        except ExternalMessageNotAccepted as e:
+            print(e)
             raise CodeDataException(error="Wallet gas is null", status=400)
 
 

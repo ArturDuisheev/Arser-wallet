@@ -30,8 +30,11 @@ class MoneroService:
                 return wallet.accounts[index]
             else:
                 for account in wallet.accounts:
-                    if account.address() == address:
-                        return account
+                    account: Account
+                    print(1)
+                    for address_ in account.addresses():
+                        if address_ == address:
+                            return account
                 else:
                     raise CodeDataException("Неверный адресс аккаунта")
 
@@ -46,6 +49,5 @@ class MoneroService:
         )
     
     @classmethod
-    def create_wallet(cls, label: str) -> Account:
-        account = wallet.new_account(label=label)
-        return account
+    def create_wallet(cls, label: str, account: Account) -> Account:
+        return account.new_address(label=label)

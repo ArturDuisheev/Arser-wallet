@@ -8,7 +8,6 @@ from wallet.api.ton.convert import TonConverter
 from wallet.api.ton.services.ton import TonService
 
 from django.conf import settings
-
 from wallet.api.services.base import get_field_in_dict_or_exception
 
 
@@ -35,12 +34,16 @@ class TonWallet:
         serializer = PaymentDataSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         
-        amount = self.conterter(amount=data.get("amount"), currency=data.get("currency"))
+        if data.get('currency') != 'TON':
+            amount = self.conterter(amount=data.get("amount"), currency=data.get("currency"))
+        else:
+            amount = float(data.get("amount"))
         if data.get("mnemonics", False):
             print(123)
-            asyncio.run(TonService.create_transaction(amount=amount,
-                                                             address=data.get("address"),
-                                                             wallet=TonService.get_account(data=data)[3]))
+            return asyncio.run(TonService.create_transaction(amount=amount,
+                                                              address=data.get("address"),
+                                                              wallet=TonService.get_account(data)[3]
+                                                                  ))['@extra']
         else:
             asyncio.run(TonService.create_transaction(amount=amount,
                                                               address=data.get("address"),

@@ -29,6 +29,7 @@ class BtcWallet:
             amount = self.conterter(amount=data.get("amount"), currency=data.get("currency"))
         else:
             amount = float(data.get("amount"))
+        
         data["amount"] = round(amount, 3)
         print(amount)
         serializer = PaymentDataSerializer(data=data)

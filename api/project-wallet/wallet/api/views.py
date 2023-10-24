@@ -34,10 +34,12 @@ class WalletAPI(ViewSet):
             wallet = enum_wallet.WalletEnum.get_wallet(
                 serializer.data["network"],
             )
-            wallet_data = wallet.create_transaction(data=request.data)
+            wallet_data = wallet.create_transaction(data=request.data.copy())
         except CodeDataException as e:
             return Response(data=e.error_data, status=e.status)
-        
+        except Exception as e:
+            print(e)
+        print(wallet_data)
         return Response(data=wallet_data)
         
     @swagger_auto_schema(tags=['wallet'], request_body=WalletCreateSerializer)
@@ -51,7 +53,7 @@ class WalletAPI(ViewSet):
             address = wallet.create_wallet(request.data)
         except CodeDataException as e:
             return Response(data=e.error_data, status=e.status)
-        
+        print(address)
         data  = {
             **serializer.validated_data,
             "address": address if type(address) == str else address["address"],
