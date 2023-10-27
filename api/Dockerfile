@@ -12,6 +12,6 @@ RUN wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-
 RUN apt-get install dpkg -y
 RUN apt-get update
 RUN apt-get install build-essential -y
-RUN dpkg -i libssl1.1_1.1.1f-1ubuntu2.19_amd64.deb
+RUN dpkg -i libssl1.1_1.1.1f-1ubuntu2.20_amd64.deb
 RUN pip install --upgrade pip
 RUN pip install -r /temp/requirements.txt
