@@ -7,6 +7,7 @@ from wallet.api.monero.serializers import PaymentDataSerializer
 from wallet.api.ton.convert import TonConverter
 from wallet.api.ton.services.ton import TonService
 
+from tonsdk.utils import to_nano
 from django.conf import settings
 from wallet.api.services.base import get_field_in_dict_or_exception
 
@@ -17,7 +18,7 @@ class TonWallet:
 
 
     def __init__(self) -> None:
-        _, _, _,self.account = TonService.get_account({
+        self.account = TonService.get_account({
             'mnemonics':settings.TON_MNEMONICS.split(','),
             })
         print(self.account, 12321312)
@@ -40,17 +41,17 @@ class TonWallet:
             amount = float(data.get("amount"))
         if data.get("mnemonics", False):
             print(123)
-            return asyncio.run(TonService.create_transaction(amount=amount,
+            data_response = asyncio.run(TonService.create_transaction(amount=amount,
                                                               address=data.get("address"),
-                                                              wallet=TonService.get_account(data)[3]
+                                                              wallet=TonService.get_account(data)[3],
                                                                   ))['@extra']
         else:
-            asyncio.run(TonService.create_transaction(amount=amount,
+            data_response = asyncio.run(TonService.create_transaction(amount=amount,
                                                               address=data.get("address"),
                                                               wallet=self.account
-                                                                  ))
+                                                                  ))['@extra']
         self._create_payment_model(serializer)
-        return serializer.validated_data
+        return data_response
     
     def get_balance(self, account=None):
         return asyncio.run(TonService.get_balance(account=account))
