@@ -50,8 +50,8 @@ class TonWallet:
                                                               address=data.get("address"),
                                                               wallet=self.account
                                                                   ))['@extra']
-        self._create_payment_model(serializer)
-        return data_response
+        
+        return {**self._create_payment_model(serializer),"txid":data_response}
     
     def get_balance(self, account=None):
         return asyncio.run(TonService.get_balance(account=account))
