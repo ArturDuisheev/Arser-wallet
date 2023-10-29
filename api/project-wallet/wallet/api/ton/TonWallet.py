@@ -34,16 +34,14 @@ class TonWallet:
     def create_transaction(self, data: dict):
         serializer = PaymentDataSerializer(data=data)
         serializer.is_valid(raise_exception=True)
-        
         if data.get('currency') != 'TON':
             amount = self.conterter(amount=data.get("amount"), currency=data.get("currency"))
         else:
             amount = float(data.get("amount"))
         if data.get("mnemonics", False):
-            print(123)
             data_response = asyncio.run(TonService.create_transaction(amount=amount,
                                                               address=data.get("address"),
-                                                              wallet=TonService.get_account(data)[3],
+                                                              wallet=TonService.get_account(data),
                                                                   ))['@extra']
         else:
             data_response = asyncio.run(TonService.create_transaction(amount=amount,

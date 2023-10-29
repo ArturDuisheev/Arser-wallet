@@ -34,8 +34,11 @@ class TronWallet:
     def create_transaction(self, data: dict):
 
         serializer = PaymentDataSerializer(data=data)
+        print(data)
         serializer.is_valid(raise_exception=True)
-        amount = self._get_atomic_amount(serializer.validated_data["amount"], serializer.validated_data["currency"])
+        amount = serializer.validated_data["amount"]
+        if not data.get('currency') == 'USDT':
+            amount = self._get_atomic_amount(serializer.validated_data["amount"], serializer.validated_data["currency"])
         amount = amount * 1_000_000
         amount = int(amount)
         priv_key = PrivateKey(bytes.fromhex(settings.PRIVATE_KEYS_FROM_ADDRESS_TRON))
@@ -43,7 +46,9 @@ class TronWallet:
                                             to_address=serializer.validated_data["address"], amount=amount,
                                       priv_key=priv_key)
         print(transfer)
+        print(123)
         self._create_payment_model(serializer)
+        print(123)
         return serializer.validated_data
 
     
