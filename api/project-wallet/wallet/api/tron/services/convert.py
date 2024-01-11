@@ -3,8 +3,10 @@ from wallet.api.services.base import Converter
 
 
 class TronUsdtConverter(Converter):
-    
-    ids = "tron"
+
+    spot = 'USDT'
+
+    ids = "tether"
 
     atomic_utils = 1_000_000_000_000
 

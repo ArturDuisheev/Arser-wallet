@@ -6,7 +6,9 @@ from tonsdk.utils import to_nano
 
 
 class BtcConverter(Converter):
-    
+
+    spot = "BTC"
+
     ids = "bitcoin"
 
     atomic_utils = 1_000_000_000_000

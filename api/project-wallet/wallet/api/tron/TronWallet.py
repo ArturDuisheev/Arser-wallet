@@ -1,4 +1,3 @@
-
 from wallet.api.tron.services.convert import TronUsdtConverter
 
 from django.conf import settings
@@ -15,51 +14,35 @@ from tronpy.keys import PrivateKey
 class TronWallet:
     """ Класс для работы с Tron"""
 
-
     converter = TronUsdtConverter()
-
 
     def get_balance(self, account=None) -> dict:
         balance = UsdtTronService.get_balance(account)
         data = {
             "balance": balance,
             "unlocked": balance
-                }
+        }
         return data
-    
+
     def _get_atomic_amount(self, amount: str, currency: str):
         return self.converter(amount=amount, currency=currency)
 
-
     def create_transaction(self, data: dict):
-
         serializer = PaymentDataSerializer(data=data)
-        print(data)
         serializer.is_valid(raise_exception=True)
         amount = serializer.validated_data["amount"]
-        if not data.get('currency') == 'USDT':
-            amount = self._get_atomic_amount(serializer.validated_data["amount"], serializer.validated_data["currency"])
-        amount = amount * 1_000_000
-        amount = int(amount)
-        priv_key = PrivateKey(bytes.fromhex(settings.PRIVATE_KEYS_FROM_ADDRESS_TRON))
         transfer = UsdtTronService.create_transaction(from_address=settings.FROM_ADDRESS_TRON,
-                                            to_address=serializer.validated_data["address"], amount=amount,
-                                      priv_key=priv_key)
+                                                      to_address=serializer.validated_data["address"], amount=amount)
         print(transfer)
-        print(123)
-        self._create_payment_model(serializer)
-        print(123)
-        return serializer.validated_data
+        obj = self._create_payment_model(serializer)
+        return {**PaymentDataSerializer(obj).data, "txid": transfer}
 
-    
     def _create_payment_model(self, serializer: PaymentDataSerializer) -> Payment:
         return serializer.save()
-    
 
     def create_wallet(self, data: dict):
-        
         return UsdtTronService.create_wallet(data=data)
-    
+
     def get_account(self, data: dict):
         address = get_field_in_dict_or_exception(data, "address", "Вы не указали address")
         return UsdtTronService.get_account(address=address)

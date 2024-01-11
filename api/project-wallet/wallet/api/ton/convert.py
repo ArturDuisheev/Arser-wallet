@@ -8,6 +8,8 @@ from tonsdk.utils import to_nano
 
 
 class TonConverter(Converter):
+
+    spot = 'TON'
     
     ids = "the-open-network"
 

@@ -41,7 +41,9 @@ class MoneroWallet:
     def create_transaction(self, data: dict):
 
         serializer = MoneroPaymentSerializer(data=data)
+        print(1)
         serializer.is_valid(raise_exception=True)
+        print(1)
         if serializer.validated_data.get("from_", None):
             self.account = self.get_account({
                 "account_index": serializer.validated_data["from_"],
@@ -49,14 +51,14 @@ class MoneroWallet:
             serializer.validated_data.pop("from_")
             serializer.validated_data.pop("mnemonics")
         amount = self._get_atomic_amount(serializer.validated_data["amount"], serializer.validated_data["currency"])
-        try:
-            transfer = self.account.transfer(amount=amount, address=serializer.validated_data["address"])
-        except NotEnoughUnlockedMoney:
-            raise CodeDataException("Недостаточно разблокированных средств")
-        except NotEnoughMoney as e:
-            print(e, 213)
-            raise CodeDataException("NotEnoughMoney")
-        print(transfer[0], transfer[0].__dict__)
+        # try:
+        #     transfer = self.account.transfer(amount=amount, address=serializer.validated_data["address"])
+        # except NotEnoughUnlockedMoney:
+        #     raise CodeDataException("Недостаточно разблокированных средств")
+        # except NotEnoughMoney as e:
+        #     print(e, 213)
+        #     raise CodeDataException("NotEnoughMoney")
+        # print(transfer[0], transfer[0].__dict__)
         return self._create_payment_model(serializer)
 
     
@@ -67,4 +69,4 @@ class MoneroWallet:
     def create_wallet(self, data: dict) -> str:
         label = "default_label"
         wallet_new, index = MoneroService.create_wallet(label=label, account=self.account)
-        return dict(id=index, address=str(wallet_new))
+        return wallet_new

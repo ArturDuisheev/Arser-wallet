@@ -9,22 +9,27 @@ from monero.account import Account
 
 
 
-wallet = Wallet(JSONRPCWallet(host=settings.MONERO_HOST, port=settings.MONERO_PORT,
-                               user=settings.MONERO_USER, password=settings.MONERO_PASSWORD))
+wallet = ...
+# Wallet(JSONRPCWallet(host=settings.MONERO_HOST, port=settings.MONERO_PORT,
+#                                user=settings.MONERO_USER, password=settings.MONERO_PASSWORD))
 
 
 class MoneroService:
 
     @classmethod
     def get_balance(cls, account: Account) -> float:
-        
+        if type(account) == dict:
+            return{
+            "balance": account['acc'].address_balance(account['address']),
+            "unlocked": account['acc'].address_balance(account['address']),
+                }
         return {
             "balance": account.balance(),
             "unlocked": account.balance(unlocked=True)
                 }
     
     @classmethod
-    def get_account(cls, index: int, address=None) -> Account:
+    def get_account(cls, index: int = None, address=None) -> Account:
         try:
             if address is None:
                 return wallet.accounts[index]
@@ -33,8 +38,10 @@ class MoneroService:
                     account: Account
                     print(1)
                     for address_ in account.addresses():
+                        
                         if address_ == address:
-                            return account
+                            return {"acc":account, "address": address}
+                    
                 else:
                     raise CodeDataException("Неверный адресс аккаунта")
 

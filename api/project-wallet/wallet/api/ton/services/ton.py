@@ -32,7 +32,9 @@ class TonService:
             client = get_client()
             get_field_in_dict_or_exception(data, "mnemonics", "Вы не указали mnemonics")
             try:
-                _, _, _, wallet = Wallets.from_mnemonics(mnemonics=data.get("mnemonics"),version=WalletVersionEnum.v3r2, workchain=0)
+                _, _, _, wallet = Wallets.from_mnemonics(mnemonics=data.get("mnemonics"),
+                                                         version=WalletVersionEnum.v3r2,
+                                                         workchain=0)
             except ExternalMessageNotAccepted as e:
                 raise CodeDataException(status=400, error="Неверный mnemonics")
             query = wallet.create_init_external_message()
@@ -45,7 +47,8 @@ class TonService:
                     "message": "success",
                     "address": wallet.address.to_string(*[True * 4 if settings.DEBUG else True * 3])
                 }
-            except Exception:
+            except Exception as e:
+                print(e)
                 data_response = {
                     "message": "Wallet balance is null, please to replenish your wallet",
                     

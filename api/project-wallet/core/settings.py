@@ -16,6 +16,7 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split()
 APPS = [
     'users',
     'wallet',
+    'admin_statistics'
 ]
 
 THEME_APPS = [
@@ -56,7 +57,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ["templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -152,4 +153,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# from .jazzmin import JAZZMIN_SETTINGS
+from .jazzmin import JAZZMIN_SETTINGS

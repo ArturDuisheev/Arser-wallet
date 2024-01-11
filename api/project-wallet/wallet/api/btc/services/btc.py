@@ -43,8 +43,6 @@ class BtcService:
         client = get_client(settings.BTC_WALLET_NAME)
         try:
             txid = client.sendtoaddress(address, amount)
-            print(f'Отправлена транзакция {txid}')
-            cls.generate_to_address(settings.BTC_DEFAULT_WALLET_ADDRESS)
             return {'txid': txid}
         except Exception as e:
             raise CodeDataException(f'Ошибка при отправке транзакции: {e}')

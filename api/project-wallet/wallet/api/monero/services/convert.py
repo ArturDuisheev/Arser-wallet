@@ -6,7 +6,9 @@ from wallet.api.services.base import Converter
 
 
 class MoneroConverter(Converter):
-    
+
+    spot = "XMR"
+
     ids = "monero"
 
     atomic_utils = 1_000_000_000_000

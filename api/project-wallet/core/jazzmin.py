@@ -12,6 +12,7 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
         {"name": "Главная", "url": "admin:index", "permissions": ["auth.view_user"]},
     ],
+    "show_ui_builder": True,
     "usermenu_links": [
         {
             "model": "user.User",
